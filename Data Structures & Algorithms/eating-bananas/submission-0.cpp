@@ -1,29 +1,29 @@
 class Solution {
 public:
+
+bool check(vector<int>piles,int h ,int k){
+    long long hours=0;
+    for(int i=0;i<piles.size();i++){
+        int bananas=piles[i];
+      int required_hour=bananas/k;
+      if(bananas%k!=0){
+        required_hour++;
+      }
+      hours=hours+required_hour;
+    }
+    return hours<=h;
+}
     int minEatingSpeed(vector<int>& piles, int h) {
-        int start=1;
-        int end=0;
-        int ans=0;
-        int n= piles.size();
-        for(int i=0;i<n;i++){
-            end=max(end,piles[i]);
-        }
-        while(start<=end){
-            int mid=start+(end-start)/2;
-            long long hours=0;
-            for(int i=0;i<n;i++){
-                hours=hours+piles[i]/mid;
-                if(piles[i]%mid!=0){
-                    hours++;
-                }
-            }
-            if(hours<=h){
-                ans=mid;
-                end=mid-1;
-            }else{
-                start=mid+1;
+        int low=1;
+        int high=*max_element(piles.begin(),piles.end());
+        while(low<high){
+            int mid=low+(high-low)/2;
+            if(check(piles,h,mid)){
+                high=mid;
+            }else {
+                low=mid+1;
             }
         }
-        return ans;
+        return low;
     }
 };
